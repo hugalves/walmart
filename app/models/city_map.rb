@@ -1,11 +1,15 @@
 class CityMap < ActiveRecord::Base
   has_one :city
 
-  def self.build_and_create_with!(city, params)
-    builder = CityMap.builder(city, params)
-    CityMap.create!(builder)
+  def self.build_and_create_with!(params)
+    city     = City.find_or_create_by!(name: params.fetch(:name))
+    builder  = CityMap.builder(city, params)
+    city_map = CityMap.find_or_initialize_by(builder.except(:distance))
 
-  rescue e
+    city_map.distance = builder[:distance]
+    city_map.save!
+
+  rescue => e
     false
   end
 

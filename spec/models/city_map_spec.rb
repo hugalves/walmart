@@ -60,23 +60,36 @@ describe CityMap do
   end
 
   describe '.build_and_create_with!' do
-    let(:params) { { name: city.name, origin: 'A', destiny: 'B', distance:10 } }
+    let(:params) { { name: city.name, origin: 'A', destiny: 'B', distance: 20 } }
 
-    subject { CityMap.build_and_create_with!(city, params) }
+    subject { CityMap.build_and_create_with!(params) }
 
     context 'when successfully' do
-      it 'does create city_map' do
-        expect { subject }.to change{ CityMap.count }.by(1)
+      context 'and having city map' do
+        before do
+          create(:city_map, city_id: city.id)
+        end
+
+        it 'does not create city_map' do
+          expect { subject }.not_to change{CityMap.count}
+        end
+
+        it 'does update distance' do
+          subject
+          expect(CityMap.first.distance).to eq 20
+        end
       end
 
-      it 'does return true' do
-        expect(subject).to be_truthy
+      context 'and not having city map' do
+        it 'does create city_map' do
+          expect { subject }.to change{ CityMap.count }.by(1)
+        end
       end
     end
 
     context 'when unsuccessfully' do
       before do
-        allow(CityMap).to receive(:create!).and_return(false)
+        allow(City).to receive(:find_or_create_by!).and_return(false)
       end
 
       it 'does not create city_map' do
@@ -88,5 +101,4 @@ describe CityMap do
       end
     end
   end
-
 end
