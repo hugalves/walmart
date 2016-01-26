@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  post   '/maps/create' => 'maps#create'
-  get    '/routes/find' => 'routes#find'
-  delete '/maps/all'    => 'maps#delete'
+  post   '/citymaps/create' => 'city_maps#create'
+  get    '/routes/find'     => 'routes#find'
 end
