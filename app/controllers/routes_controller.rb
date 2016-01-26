@@ -1,6 +1,8 @@
 class RoutesController < ApplicationController
   def find
     city        = City.find_by(name: city_name)
+    return render json: { cost: nil } if city.blank?
+
     city_search = CitySearch.new(city.id, origin, destiny)
     transport   = Transport.new(range_of, fuel_price)
 
@@ -23,10 +25,6 @@ class RoutesController < ApplicationController
     city_data['destiny']
   end
 
-  def distance
-    city_data['distance']
-  end
-
   def city_data
     routes.fetch('city_data')
   end
@@ -47,7 +45,7 @@ class RoutesController < ApplicationController
     params
       .require(:route)
       .permit(
-        city_data: [:name, :origin, :destiny, :distance],
+        city_data: [:name, :origin, :destiny],
         transport: [:range_of, :fuel_price])
   end
 end
