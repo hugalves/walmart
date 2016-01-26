@@ -12,6 +12,12 @@ gem 'mysql2'
 
 group :development, :test do
   gem 'byebug'
+  gem 'simplecov'
+  gem 'simplecov-rcov'
+  gem 'rspec-rails'
+  gem 'factory_girl'
+  gem 'database_cleaner'
+  gem 'faker'
 end
 
 group :development do

@@ -1,13 +1,13 @@
 class CitySearch
-  def initialize(map_id, origin, destiny, city_map=nil, distance=0.0)
-    @map_id   = map_id
+  def initialize(city_id, origin, destiny, city_map=nil, distance=0.0)
+    @city_id  = city_id
     @origin   = origin.upcase
     @destiny  = destiny.upcase
     @city_map = city_map
     @distance = distance
   end
 
-  attr_reader   :origin, :destiny, :city_map, :map_id
+  attr_reader   :origin, :destiny, :city_id, :city_map
   attr_accessor :distance
 
   def lowest_distance
@@ -25,8 +25,8 @@ class CitySearch
   private
 
   def distances
-    CityMap.routes_to(destiny).flat_map do |route|
-      CitySearch.new(map_id, origin, destiny, route).dig_routes_distances
+    CityMap.routes_to(city_id, destiny).flat_map do |route|
+      CitySearch.new(city_id, origin, destiny, route).dig_routes_distances
     end
   end
 
@@ -40,9 +40,9 @@ class CitySearch
 
   def by_recursion
     self.distance += city_map.distance
-    routes         = CityMap.routes_to(city_map.origin)
+    routes         = CityMap.routes_to(city_id, city_map.origin)
     routes.map do |route|
-      CitySearch.new(map_id, origin, destiny, route, distance).dig_routes_distances
+      CitySearch.new(city_id, origin, destiny, route, distance).dig_routes_distances
     end
   end
 
@@ -55,6 +55,6 @@ class CitySearch
   end
 
   def route_to(destiny)
-    CityMap.route_between(map_id, origin, destiny)
+    CityMap.route_between(city_id, origin, destiny)
   end
 end

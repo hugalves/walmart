@@ -6,13 +6,9 @@ class MapsController < ApplicationController
 
   private
 
-  def json_request?
-    request.format.json?
-  end
-
   def map_params
     params
       .require(:map)
-      .permit('name', 'origin', 'destiny', 'distance')
+      .permit(:name, :origin, :destiny, :distance)
   end
 end
