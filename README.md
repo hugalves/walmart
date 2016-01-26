@@ -4,6 +4,17 @@
 * Ruby 2.1.2
 * Rails 4.2.5
 * MySQL
+* Git
+
+### Configuração
+
+```sh
+git clone git@github.com:hugalves/walmart.git
+cd walmart
+bundle install
+rake db:setup
+```
+
 
 ### Rotas
 
